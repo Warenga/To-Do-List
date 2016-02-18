@@ -1,25 +1,29 @@
-from flask import render_template, redirect, url_for
+from flask import render_template, session, redirect, url_for, flash
 from . import main
 from .forms import ListForm, TaskForm
+from .. import db
+from ..models import Lis, Tasks
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-	title = None
 	form = ListForm()
 	if form.validate_on_submit():
-		title = form.title.data
+		lis = Lis(title=form.title.data)
+		db.session.add(lis)
 		flash('You have made a new List')
-		return redirect(url_for('.index', title=title))
-	form.title.data = ''
-	return render_template('index.html', form=form, title=title)
+		return redirect(url_for('.index'))
+	lists = Lis.query.order_by(Lis.title).all()
+	return render_template('index.html', form=form, lists=lists)
 
-
-@main.route('/task', methods=['GET', 'POST'])
-def task():
+@main.route('/task/<int:id>', methods=['GET', 'POST'])
+def lis(id):
+	lis = Lis.query.get_or_404(id)
 	form = TaskForm()
 	if form.validate_on_submit():
-		body = form.body.data
+		tas = Tasks(body=form.body.data, lis=lis)
+		db.session.add(tas)
 		flash('Task added to List')
-		return redirect(url_for('.task', body=body))
+		return redirect(url_for('.lis', id=lis.id))
 	form.body.data = ''
-	return render_template('task.html', form=form)
+	tasks = Tasks.query.order_by(Tasks.body).all()
+	return render_template('task.html', lists=[lis], form=form, tasks=tasks)

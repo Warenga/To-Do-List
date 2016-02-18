@@ -4,11 +4,45 @@
 
 {% block title %}To-Do{% endblock %}
 
+{% block js %}
+{{ super }}
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<script src="{{ url_for('static', filename='js/task.js') }}"></script>
+{% endblock %}
+
 {% block page_content %}
-<div class="page-header">
-	<h1>Task</h1>
-</div>
-<div class="col-md-4">
-{{ wtf.quick_form(form) }}
-</div>
+<ul class="lists">
+	{% for lis in lists %}
+	<div class="header">
+		<h2 class="title">{{ lis.title|title }}</h2>
+	</div>
+
+		<li class="lis">
+			<div class="lis-body">{{ lis.body }}</div>
+			<div class="lis-footer">            
+				<div>
+				{{ wtf.quick_form(form) }}
+				</div>
+			</div>
+		</li>
+	{% endfor %}
+	<ul>
+		{% for tas in tasks %}
+			{% if not tas.done %}
+			<li class="tas">
+				<div class="tas-body"><input type="checkbox" id="checkbox" data-tas-id="{{ tas.id }}">{{ tas.body }}</div>
+			</li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+	<ul>
+		{% for tas in tasks %}
+			{% if tas.done %}
+			<li class="tas">
+				<div class="tas-body"><input type="checkbox" id="checkbox" data-tas-id="{{ tas.id }}" checked="checked">{{ tas.body }}</div>
+			</li>
+			{% endif %}
+		{% endfor %}
+	</ul>
+</ul>
 {% endblock %}
