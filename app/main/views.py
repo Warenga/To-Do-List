@@ -27,3 +27,7 @@ def lis(id):
 	form.body.data = ''
 	tasks = Tasks.query.order_by(Tasks.body).all()
 	return render_template('task.html', lists=[lis], form=form, tasks=tasks)
+
+@main.route('/task/delete', methods=['POST'])
+def delete_task():
+	db.session.delete(tas)

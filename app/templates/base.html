@@ -3,9 +3,8 @@
 
 {% block title %}To-Do{% endblock %}
 
-{% block js %}
-{{ super }}
-{% endblock %}
+{% block js %}{{ super }}{% endblock %}
+
 
 {% block navbar %}
 	<div class="navbar navbar-inverse" role="navigation">
@@ -39,13 +38,5 @@
 	{% endfor %}
  
 	{% block page_content %}{% endblock %}
-	{% block scripts %}
-	{{ super() }}
-	<!-- Compiled and minified CSS -->
-  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
-
-  	<!-- Compiled and minified JavaScript -->
-  	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-	{% endblock %}
 </div>
 {% endblock %}

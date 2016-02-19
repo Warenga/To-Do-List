@@ -1,11 +1,15 @@
 
-<ul class="lists">
+
+<div class="list-group">
 	{% for lis in lists %}
-	<li class="lis">
-		<div class="lis-body">{{ lis.title }}</div>
-		<div class="lis-footer">            
-			<a href="{{ url_for('.lis', id=lis.id) }}">
-			<span class="label label-primary">Tasks</span>
-			</a>
-	</li>
+	<a href="{{ url_for('.lis', id=lis.id) }}" class="list-group-item">{{ lis.title }}
+		<button type="button" class="close" data-dismiss='{{ lis.title }}'>
+ 				&times;
+ 		</button>
+	</a>
 	{% endfor %}
+</div>
+
+
+
+

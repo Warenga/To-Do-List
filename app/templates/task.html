@@ -4,45 +4,36 @@
 
 {% block title %}To-Do{% endblock %}
 
-{% block js %}
-{{ super }}
-<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
-<script src="{{ url_for('static', filename='js/task.js') }}"></script>
-{% endblock %}
-
 {% block page_content %}
 <ul class="lists">
 	{% for lis in lists %}
 	<div class="header">
-		<h2 class="title">{{ lis.title|title }}</h2>
+		<h2 class="title">{{ lis.title }}</h2>
 	</div>
-
-		<li class="lis">
-			<div class="lis-body">{{ lis.body }}</div>
-			<div class="lis-footer">            
-				<div>
-				{{ wtf.quick_form(form) }}
+	
+		 <div class="col-lg-8">
+            <div class="well" style="max-height: 300px;overflow: auto;">
+	            <div class="lis">
+					<div class="lis-body"> 
+						<div class="header"> Tasks</div> 
+						<div> 
+						{{ wtf.quick_form(form) }}
+						</div>
+					</div>
 				</div>
-			</div>
-		</li>
+            	<ul id="check-list-box" class="list-group checked-list-box">
+            		{% for tas in lis.tasks %}
+                  	<div class="checkbox">
+                  		<label>
+     						<input type="checkbox"> {{ tas.body }}
+   						</label>
+   					</div>
+                  	{% endfor %}
+	     		</ul>
+            </div>
+        </div>
 	{% endfor %}
-	<ul>
-		{% for tas in tasks %}
-			{% if not tas.done %}
-			<li class="tas">
-				<div class="tas-body"><input type="checkbox" id="checkbox" data-tas-id="{{ tas.id }}">{{ tas.body }}</div>
-			</li>
-			{% endif %}
-		{% endfor %}
-	</ul>
-	<ul>
-		{% for tas in tasks %}
-			{% if tas.done %}
-			<li class="tas">
-				<div class="tas-body"><input type="checkbox" id="checkbox" data-tas-id="{{ tas.id }}" checked="checked">{{ tas.body }}</div>
-			</li>
-			{% endif %}
-		{% endfor %}
-	</ul>
 </ul>
 {% endblock %}
+
+{{ tas.body }}

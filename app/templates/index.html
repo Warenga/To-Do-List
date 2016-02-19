@@ -2,15 +2,16 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 
-
-{% block title %}To-Do{% endblock %}
+{% block js %}
+{{ super }}
+	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+{% endblock %}
 
 {% block page_content %} 
 <div class="page-header">    
-<div>
-  
-{{ wtf.quick_form(form) }}    
-
-</div>
+	<div>
+	{{ wtf.quick_form(form) }}    
+	</div>
 {% include '_lis.html' %}
+</div>
 {% endblock %} 
