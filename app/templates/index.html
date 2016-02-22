@@ -8,10 +8,19 @@
 {% endblock %}
 
 {% block page_content %} 
-<div class="page-header">    
-	<div>
+<div class="page-header"> 
+	<h4><b>Hello, 
+	{% if current_user.is_authenticated %} 
+		{{ current_user.username }}
+	{% else %}
+		Stranger
+	{% endif %}</b></h4> 
+</div>   
+<div>
+	{% if current_user %}    
 	{{ wtf.quick_form(form) }}    
-	</div>
+	{% endif %}   
+</div>
 {% include '_lis.html' %}
 </div>
 {% endblock %} 
