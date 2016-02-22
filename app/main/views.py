@@ -37,7 +37,7 @@ def delete_task(id):
 	if request.method == 'POST':
 		db.session.delete(lis)
 		db.session.commit()
-		flash('Entry was deleted')
+		flash('List was deleted')
 		return redirect(url_for('.index', lists=[lis]))
 
 	
