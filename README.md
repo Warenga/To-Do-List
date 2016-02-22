@@ -3,6 +3,8 @@
 
 	What it should do
 
+		* New user registration
+		* User sign in
 		* Allow user to create a list
 		* User can add tasks in the list
 		* Tasks can be checked done
