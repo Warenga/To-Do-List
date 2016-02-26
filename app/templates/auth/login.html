@@ -2,19 +2,25 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 
+{% block css %}
+	{{ super }}
+	<link rel="stylesheet" type="text/css" href="css/layout.css">
+{% endblock %}
+
 {% block title %}Flasky - Login{% endblock %}
 
 {% block page_content %}
 <div class="page-header">
 	<h1>Login</h1>
 </div>
-<div class="col-lg-4">
-	 <div class="well" style="max-height: 300px;overflow: auto;">
-		{{ wtf.quick_form(form) }}
-		<p> 
-			New user?
-			<a href="{{ url_for('auth.register') }}">Click here to register</a>
-		</p>
+<div class="container-fluid">
+	<div class="col-xs-7 col-lg-4">
+			{{ wtf.quick_form(form) }}
+			<p> 
+				New user?
+				<a href="{{ url_for('auth.register') }}">Click here to register</a>
+			</p>
+		</div>
 	</div>
 </div>
 {% endblock %}

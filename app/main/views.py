@@ -1,9 +1,10 @@
-from flask import render_template, session, redirect, request, url_for, flash
+from flask import jsonify, render_template, session, redirect, request, url_for, flash
 from . import main
 from .forms import ListForm, TaskForm
 from .. import db
 from ..models import Lis, Tasks, User
 from flask.ext.login import login_required, current_user
+import json
 
 @main.route('/', methods=['GET', 'POST'])
 @login_required
@@ -39,5 +40,6 @@ def delete_task(id):
 		db.session.commit()
 		flash('List was deleted')
 		return redirect(url_for('.index', lists=[lis]))
+
 
 	

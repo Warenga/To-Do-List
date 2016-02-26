@@ -4,14 +4,14 @@
 
 {% block title %}To-Do{% endblock %}
 
+
 {% block page_content %}
 <ul class="lists">
 	{% for lis in lists %}
 	<div class="header">
 		<h2 class="title">{{ lis.title }}</h2>
 	</div>
-	
-		 <div class="col-lg-8">
+		 <div class="col-lg-5">
             <div class="well" style="max-height: 300px;overflow: auto;">
 	            <div class="lis">
 					<div class="lis-body"> 
@@ -21,12 +21,12 @@
 						</div>
 					</div>
 				</div>
-            	<ul id="check-list-box" class="list-group checked-list-box">
+            	<ul id="check1" class="list-group checked-list-box">
             		{% for tas in lis.tasks %}
                   	<div class="checkbox">
-                  		<label>
-     						<input type="checkbox"> {{ tas.body }}
-   						</label>
+	                  	<label>
+		     				<input class="strikethrough"  type="checkbox" value="1"><span>{{ tas.body }}</span>
+	   					</label>
    					</div>
                   	{% endfor %}
 	     		</ul>

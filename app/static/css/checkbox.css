@@ -1,0 +1,46 @@
+#background {
+  background-image: url("images/Melamine-wood-004.png"); 
+}
+
+body {
+  background-color: #303030;
+}
+
+
+
+.strikethrough:checked + span {
+	background-color:#C0C0C0;
+    text-decoration: line-through;
+}
+
+.cards {
+  width: 150px;
+  height: 100px;
+  margin: 16px;
+  padding: 16px;
+}
+
+*, *:before, *:after {box-sizing:  border-box !important;}
+
+
+#row {
+ -moz-column-width: 18em;
+ -webkit-column-width: 18em;
+ -moz-column-gap: 1em;
+ -webkit-column-gap:1em; 
+  
+}
+
+.item {
+ display: inline-block;
+ padding:  .25rem;
+ width:  100%; 
+}
+
+.well {
+ position:relative;
+ display: block;
+}
+
+
+
