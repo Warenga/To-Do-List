@@ -39,21 +39,20 @@ Have python 2.7 or 3 installed in your machine
 
 <strong>Install the requirements</strong>
 
-	`$pip install -r requirements.txt`
+	$pip install -r requirements.txt
 
 <strong>Initialize the database</strong>
 
-	`$pip manage.py db init`
+	$pip manage.py db init
 
 <strong>Construct and upgrade the database</strong>
 
-	`$ python manage.py db upgrade`
+	$ python manage.py db upgrade
 
 <strong>Run the server</strong>
 
-	```
 	$ python manage.py runserver
-	```
+	
 
 Enjoy!
 
