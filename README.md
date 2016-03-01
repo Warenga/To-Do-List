@@ -1,9 +1,9 @@
 
-<strong># To Do List Application</strong>
+# To Do List Application
 
 A simple to do list application that allows management of tasks.
 
-Written in <strong>python language</strong> using <strong>flask framework</strong>. The UI is <strong>Jinja2 templates</strong> incorporated in <strong>flask twitter-bootstrap</strong>. The database is <strong>SQLAlchemy</strong> in <stong>SQlite</stong>.
+Written in <strong>python language</strong> using <strong>flask framework</strong>. The UI is <strong>Jinja2 templates</strong> incorporated in <strong>flask twitter-bootstrap</strong>. The database is <strong>SQLAlchemy</strong> in <strong>SQlite</strong>.
 
 
 Click <a href="http://tolist-staging.herokuapp.com/"> here</a> to view the staged version.
@@ -18,13 +18,13 @@ Click <a href="http://tolist-staging.herokuapp.com/"> here</a> to view the stage
 	4. User can add tasks to a list
 	5. Tasks can be checked done
 
-	### What needs to be added
-	----------------------------------------------
+### What needs to be added
+----------------------------------------------
 
-		1. Login with Facebook or Twitter options
-		2. Task reminder
-		3. Sharing of tasks
-		4. Sending tasks to email
+	1. Login with Facebook or Twitter options
+	2. Task reminder
+	3. Sharing of tasks
+	4. Sending tasks to email
 
 
 
@@ -39,19 +39,21 @@ Have python 2.7 or 3 installed in your machine
 
 <strong>Install the requirements</strong>
 
-	```$pip install -r requirements.txt```
+	`$pip install -r requirements.txt`
 
 <strong>Initialize the database</strong>
 
-	```$pip manage.py db init```
+	`$pip manage.py db init`
 
 <strong>Construct and upgrade the database</strong>
 
-	```$ python manage.py db upgrade```
+	`$ python manage.py db upgrade`
 
 <strong>Run the server</strong>
 
-	```$ python manage.py runserver```
+	```
+	$ python manage.py runserver
+	```
 
 Enjoy!
 
