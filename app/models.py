@@ -3,7 +3,7 @@ from flask import request
 from flask import current_app, session, url_for, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin
-from rauth import OAuth2Service
+
 
 
 

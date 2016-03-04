@@ -4,7 +4,7 @@ from flask.ext.bootstrap import Bootstrap
 from flask.ext.sqlalchemy import SQLAlchemy
 from config import config
 from flask.ext.login import LoginManager
-from flask.ext.mail import Message, Mail
+# from flask.ext.mail import Message, Mail
 from flask_oauthlib.client import OAuth
 
 
@@ -15,7 +15,7 @@ login_manager.login_view = 'auth.login'
 
 bootstrap = Bootstrap()
 db = SQLAlchemy()
-mail = Mail()
+# mail = Mail()
 # googlelogin = GoogleLogin()
 oauth = OAuth()
 
@@ -30,7 +30,7 @@ def create_app(config_name):
 	bootstrap.init_app(app)
 	db.init_app(app)
 	login_manager.init_app(app)
-	mail.init_app(app)
+	# mail.init_app(app)
 	# googlelogin.init_app(app)
 	oauth.init_app(app)
 	
