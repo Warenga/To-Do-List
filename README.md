@@ -14,19 +14,23 @@ Click <a href="http://tolist-staging.herokuapp.com/"> here</a> to view the stage
 
 	1. New User Registration
 	2. User Sign In
-	3. Allow user to create a list (Collection of Cards)
-	4. User can add tasks to a list
-	5. Tasks can be checked done
+	3. Login with Facebook or Twitter options
+	4. Allow user to create a list (Collection of Cards)
+	5. User can add tasks to a list
+	6. Tasks can be checked done
+	7. Sending tasks to email
 
 ### What needs to be added
 ----------------------------------------------
 
-	1. Login with Facebook or Twitter options
-	2. Task reminder
-	3. Sharing of tasks
-	4. Sending tasks to email
+	1. Task reminder
+	2. Sharing of tasks
 
-
+### Bugs
+----------------------------------------------
+	
+	1. Twitter Login with a callback bug
+	
 
 ### Run it locally
 --------------------------------------------------

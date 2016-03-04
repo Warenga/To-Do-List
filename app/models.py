@@ -10,7 +10,6 @@ from rauth import OAuth2Service
 class User(UserMixin, db.Model):
 	__tablename__ = 'users'
 	id = db.Column(db.Integer, primary_key=True)
-	# social_id = db.Column(db.String(64), nullable=False,  unique=True)
 	email = db.Column(db.String(64), unique=True, index=True)
 	username = db.Column(db.String(64), unique=True, index=True)
 	password_hash = db.Column(db.String(128))

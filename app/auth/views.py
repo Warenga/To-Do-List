@@ -70,7 +70,7 @@ def facebook_authorized():
 
 @facebook.tokengetter
 def get_facebook_oauth_token():
-    return session.get('oauth_token')
+	return session.get('oauth_token')
 
 @twitter.tokengetter
 def get_twitter_token():
@@ -90,10 +90,18 @@ def twitter_oauthorized():
 	resp = twitter.authorized_response()
 	if resp is None:
 		flash('You denied the request to sign in')
+		redirect(url_for('main.login'))
 	else:
 		session['twitter_oauth']= resp
-		db.session.add(session)
+	this_user = User.query.filter_by(username=resp['screen_name']).first()
+	if this_user is None:
+		new_user = User(username=resp['screen_name'],
+			password=resp['oauth_token_secret'])
+		db.session.add(new_user)
 		db.session.commit()
+		login_user(new_user)
+	else:
+		login_user(this_user)
 	return redirect(url_for('main.index'))
 
 

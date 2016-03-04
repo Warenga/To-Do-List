@@ -28,7 +28,7 @@
 					<br>
 					{% for lis in lists %}
 					<div class="list-group" id="list">
-					  <button type="button"  id="{{lis.id}}" class="list-group-item">{{lis.title}}</button>
+					  <button type="button" action="{{ url_for('main.lis', lis.id) }]"  id="{{lis.id}}" class="list-group-item">{{lis.title}}</button>
 					</div>
 					
 				</ul>
