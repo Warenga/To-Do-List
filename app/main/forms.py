@@ -1,14 +1,14 @@
 from flask.ext.wtf import Form 
-from wtforms import StringField, SubmitField, TextAreaField, BooleanField, HiddenField
+from wtforms import StringField, SubmitField, TextAreaField, BooleanField, HiddenField, validators
 from wtforms.validators import Required
 
 class ListForm(Form):
-	title = StringField('Title')
+	title = StringField('New List', validators=[Required()])
 	submit = SubmitField('Submit')
 
 
 class TaskForm(Form):
 	body = StringField('', validators=[Required()])
-	submit = SubmitField('Submit')
+	submit = SubmitField('Save')
 
 

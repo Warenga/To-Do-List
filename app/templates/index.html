@@ -4,28 +4,72 @@
 
 {% block styles %}
 {{ super () }}
+
 	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-		
+	<script src="{{ url_for('static', filename='js/ajax.js') }}"></script> 
+	
 {% endblock %}
 
 
-{% block page_content %} 
-<div class="container-fluid">
-	<div class ="col-lg-4">
-		<div class="page-header">
-			{% if current_user.is_authenticated %}   
-				{{ wtf.quick_form(form) }}
-			{% endif %}
-		</div> 
-	</div>
-	<div class = "col-lg-8">
-		<div class="container-fluid">
+{% block side_navbar %}
+<div class="sidebar-nav" id="sidebar">
+		<div class="sidbar-nav breadcrumb pull-left col-sm-3" style=" margin-top: 25px; margin-left: 60px; background-color: #fff; border-radius: 10px;">
+			<div class="nav-canvas">
+				<div class="nav-sm nav nav-stacked">
+
+				</div>
+				<ul  class="nav nav-pills nav-stacked main-menu">
+					<li class="nav-header">
+						<span>{% if current_user.is_authenticated %} 
+								{{ wtf.quick_form(lform, url_for('main.index'))}} 
+
+							{% endif %}</span>
+					</li>
+					<br>
+					{% for lis in lists %}
+					<div class="list-group" id="list">
+					  <button type="button"  id="{{lis.id}}" class="list-group-item">{{lis.title}}</button>
+					</div>
+					
+				</ul>
+			</div>
+		</div>
+</div>
+<script>
+
+		$(document).ready(function() {
+			$('#list button').on('click', function() {
+				var id = $('#list button').attr('id');
+				$.ajax({
+					url: "{{ url_for('main.show') }}",
+					type: 'GET',
+					success: function(res) {
+						console.log(res);
+					},
+					error: function(error) {
+						console.log(error);
+					}
+				});
+			});
+		});
+	</script>
+	{% endfor %}
+
+{% endblock %}
+
+{% block page_content %}
+	<div id="background">
+		<div id="result">
+			<h3>TO DO LIST APPLICATION</h3>
 		</div>
 	</div>
-</div>
-<div class="container-fluid">
-	<p>{% include '_lis2.html' %}</p>
-</div>
 
-{% endblock %} 
-	
+
+{% endblock %}
+
+
+
+
+
+
+

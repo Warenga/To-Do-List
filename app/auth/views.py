@@ -1,10 +1,11 @@
 
-from flask import render_template, redirect, request, url_for, flash
-from flask.ext.login import login_user, logout_user, login_required
+from flask import render_template, redirect, request, url_for, flash, current_app, session 
+from flask.ext.login import login_user, logout_user, login_required, current_user
 from . import auth
 from ..models import User
 from .forms import LoginForm, RegistrationForm
 from .. import db
+from app.auth import facebook, twitter
 
 
 @auth.route('/login', methods=['GET', 'POST'])
@@ -15,9 +16,8 @@ def login():
 		flash('Welcome %s' % user.username )
 		if user is not None and user.verify_password(form.password.data):
 			login_user(user, form.remember_me.data)
-			return redirect(request.args.get('next') or url_for('main.dex'))
+			return redirect(request.args.get('next') or url_for('main.index'))
 		flash('Invalid username or password.')
-
 	return render_template('auth/login.html', form=form)
 
 @auth.route('/logout')
@@ -25,7 +25,8 @@ def login():
 def logout():
 	logout_user()
 	flash('You have been logged out.')
-	return redirect(url_for('auth.login'))
+	session.pop('twitter_oauth', None)
+	return redirect(url_for('main.firstpage'))
 
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
@@ -38,3 +39,62 @@ def register():
 		flash('You can now login.')
 		return redirect(url_for('auth.login'))
 	return render_template('auth/register.html', form=form)
+
+
+
+@auth.route('/facebook-login')
+def facebook_login():
+	callback = url_for(
+		'auth.facebook_authorized',
+		next=request.args.get('next') or request.referrer or None,
+		_external=True
+		)
+	return facebook.authorize(callback=callback)
+
+@auth.route('/login/authorized')
+def facebook_authorized():
+	resp = facebook.authorized_response()
+	if resp in None:
+		return 'Access denied: reason=%s error=%s' % (
+			request.args['error_reason'],
+			request.args['error_decription']
+			)
+	if isinstance(resp, OAuthException):
+		return 'Access denied: %s' % resp.message
+
+	session['oauth_token'] = (resp['access_token'], '')
+	me = facebook.get('/me')
+	# return 'Logged in as id=%s name=%s redirect=%s' %\
+	# 	(me.data['id'], me.data['name'],  request.args.get('next'))
+	return redirect(url_for('main.index'))
+
+@facebook.tokengetter
+def get_facebook_oauth_token():
+    return session.get('oauth_token')
+
+@twitter.tokengetter
+def get_twitter_token():
+	if 'twitter_oauth' in session:
+		resp = session['twitter_oauth']
+		return resp['oauth_token'], resp['oauth_token_secret']
+
+@auth.route('/twitter-login')
+def twitter_login():
+	callback_url = url_for(
+		'auth.twitter_oauthorized',
+		next= request.args.get('next'))
+	return twitter.authorize(callback=callback_url or request.referrer or None)
+
+@auth.route('/oauthorized')
+def twitter_oauthorized():
+	resp = twitter.authorized_response()
+	if resp is None:
+		flash('You denied the request to sign in')
+	else:
+		session['twitter_oauth']= resp
+		db.session.add(session)
+		db.session.commit()
+	return redirect(url_for('main.index'))
+
+
+

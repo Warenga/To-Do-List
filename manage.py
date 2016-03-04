@@ -3,6 +3,7 @@ from app import create_app, db
 from app.models import Lis, Tasks, User
 from flask.ext.script import Manager, Shell 
 from flask.ext.migrate import Migrate, MigrateCommand
+from flask.ext.mail import Message, Mail
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 manager = Manager(app)

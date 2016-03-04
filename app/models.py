@@ -1,16 +1,23 @@
 from . import db, login_manager
 from flask import request
-from flask import current_app
+from flask import current_app, session, url_for, request, redirect, session
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask.ext.login import UserMixin
+from rauth import OAuth2Service
+
+
 
 class User(UserMixin, db.Model):
 	__tablename__ = 'users'
 	id = db.Column(db.Integer, primary_key=True)
+	# social_id = db.Column(db.String(64), nullable=False,  unique=True)
 	email = db.Column(db.String(64), unique=True, index=True)
 	username = db.Column(db.String(64), unique=True, index=True)
 	password_hash = db.Column(db.String(128))
 	lists = db.relationship('Lis', backref='author', lazy='dynamic')
+
+	def __repr__(self):
+		return '<User {0}>'.formant(self.username)
 
 	@property
 	def password(self):
@@ -27,6 +34,7 @@ class User(UserMixin, db.Model):
 	def load_user(user_id):
 		return User.query.get(int(user_id))
 
+
 				
 class Lis(db.Model):
 	__tablename__ = 'lists'
@@ -34,6 +42,7 @@ class Lis(db.Model):
 	title = db.Column(db.String(64), unique=True)
 	author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 	tasks = db.relationship('Tasks', backref='lis')
+
 
 	def __repr__(self):
 		return '<Title %r>' % self.title
@@ -44,6 +53,5 @@ class Tasks(db.Model):
 	body = db.Column(db.Text(64), unique=True, index=True)
 	done = db.Column(db.Boolean, default=False)
 	lis_id = db.Column(db.Integer, db.ForeignKey('lists.id'))
-
 
 

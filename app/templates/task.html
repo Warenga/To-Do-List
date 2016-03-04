@@ -3,37 +3,69 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}To-Do{% endblock %}
+{% block side_navbar %}
+<div class="sidebar-nav" id="sidebar">
+		<div class="sidbar-nav breadcrumb pull-left col-sm-3" style=" margin-top: 25px; margin-left: 60px; background-color: #fff; border-radius: 10px;">
+			<div class="nav-canvas">
+				<div class="nav-sm nav nav-stacked">
 
+				</div>
+				<ul class="nav nav-pills nav-stacked main-menu">
+					<li class="nav-header">
+						<span>{% if current_user.is_authenticated %} 
+								{{ wtf.quick_form(lform, url_for('main.index'))}} 
+
+							{% endif %}</span>
+					</li>
+					{% for lis in lists %}
+					<li class="accordion">
+						<a href="{{ url_for('main.lis', id = lis.id)}}">{{ lis.title }}</a>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+</div>
+
+{% endblock %}
 
 {% block page_content %}
-<ul class="lists">
-	{% for lis in lists %}
-	<div class="header">
-		<h2 class="title">{{ lis.title }}</h2>
-	</div>
-		 <div class="col-lg-5">
-            <div class="well" style="max-height: 300px;overflow: auto;">
-	            <div class="lis">
-					<div class="lis-body"> 
-						<div class="header"> Tasks</div> 
-						<div> 
-						{{ wtf.quick_form(form) }}
-						</div>
-					</div>
-				</div>
-            	<ul id="check1" class="list-group checked-list-box">
-            		{% for tas in lis.tasks %}
-                  	<div class="checkbox">
-	                  	<label>
-		     				<input class="strikethrough"  type="checkbox" value="1"><span>{{ tas.body }}</span>
-	   					</label>
-   					</div>
-                  	{% endfor %}
-	     		</ul>
-            </div>
-        </div>
-	{% endfor %}
-</ul>
+<div id="background">
+	<ul class="lists">
+		{% for lis in lists %}
+		<form action="{{ url_for('main.send', id = lis.id) }}" method="post">
+			<button class="btn btn-default" style="margin-top:10px;"><h5>Send to mail<h5></button>
+		</form>
+
+
+		<div class="header" id="title">
+			<h2>{{ lis.title }}</h2>
+
+		</div>
+
+		<div class="col-lg-5">
+			{{ wtf.quick_form(tform, action=url_for('main.lis', id=lis.id)) }}
+			<div class="body" id="lists">	
+				<ul id="check1" class="list-group checked-list-box">
+	            {% for tas in lis.tasks %}
+	                <div class="checkbox">
+		                <label>
+			     			<h5><input class="strikethrough"  type="checkbox" value="1"><span>{{ tas.body }}</span></h5>
+		   				</label>
+	   				</div>
+	            {% endfor %}
+		     	</ul>
+			</div>  
+			
+				
+
+		{% endfor %}
+	</ul>
+</div>
+
 {% endblock %}
+
+
+
 
 

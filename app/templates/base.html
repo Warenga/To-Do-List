@@ -5,7 +5,8 @@
 	    {% block styles %}
 	    {{ super() }} 
 		    <link href="{{ url_for('static', filename = 'css/checkbox.css') }}" rel="stylesheet">
-		    <script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/123941/masonry.js"></script>
+		    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		    <link href="{{ url_for('static', filename = 'css/bootstrap-social.css') }}" rel="stylesheet">
 	    {% endblock %}
 
 		{% block navbar %}
@@ -39,86 +40,39 @@
 					</div>
 				</div>
 			</div>
+			{% block side_navbar %}{% endblock %}
 		{% endblock %}
 
 
 		{% block content %}
-		<div id="background" style="height: 590px; margin-left: 20px; margin-right: 20px;">
-			<div class="container">
+			<div class="container-fluid" id="main">
 				{% for message in get_flashed_messages() %}
-				<div class="alert alert-warning">
+				<div class="alert alert-warning" >
 				 	<button type="button" class="close" data-dismiss="alert">&times;</button>
 				 	{{ message }}
 				</div>
 				{% endfor %}
-			 
+
 				{% block page_content %}{% endblock %}
 			</div>
+			
 		</div>
+		{% endblock %}
+
+		{% block nav %}
+		<nav class="social">
+			<ul>
+				<li><a href="http://twitter.com/">Twitter<i class = "fa fa-twitter">
+				<li><a href="http://facebook.com/">Facebook<i class = "fa fa-facebook">
+				<li><a href="http://google+.com/">Google+<i class = "fa fa-google+">
 		{% endblock %}
 
 		{% block js %}
 		{{ super () }}
 	 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    	
     	{% endblock %}
     </div>
 
-    	<script type="text/javascript">
 
-			/* Demo Scripts for Making Twitter Bootstrap 3 Tab Play Nicely With The Masonry Library
-			* on SitePoint by Maria Antonietta Perna
-			*/
-
-			//Initialize Masonry inside Bootstrap 3 Tab component 
-
-			(function( $ ) {
-
-			  var $container = $('.masonry-container');
-			  $container.imagesLoaded( function () {
-			    $container.masonry({
-			      columnWidth: '.item',
-			      itemSelector: '.item'
-			    });
-			  });
-
-			  //Reinitialize masonry inside each panel after the relative tab link is clicked - 
-			  $('a[data-toggle=tab]').each(function () {
-			    var $this = $(this);
-
-			    $this.on('shown.bs.tab', function () {
-
-			      $container.imagesLoaded( function () {
-			        $container.masonry({
-			          columnWidth: '.item',
-			          itemSelector: '.item'
-			        });
-			      });
-
-			    }); //end shown
-			  });  //end each
-
-			})(jQuery);
-
-
-		</script>
-<!-- 
-    	<script>
-    		$(document).ready(function() {
-    			$("#btn").click(function() {
-    				body = $("#body").val()
-    				if body='':
-    					alert("Field Required");
-    				else:
-    					$.post('/', {
-    						body=body
-    					},
-    					function(response, status){
-    						alert("You've added a new list")
-    						alert(" " +response+ "\n Status:" +status);
-    					$("#form")[0].reset();
-    					});
-    			});
-    		});
-    	</script>
-			 -->
