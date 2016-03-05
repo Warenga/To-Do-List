@@ -1,0 +1,24 @@
+<!-- Welcome page  -->
+
+{% extends "base.html" %}
+
+{% block content %}
+	<div class="container-fluid" id="firstpage">
+		<a href="{{url_for('auth.facebook_login')}}" class="btn btn-block btn-social btn-facebook"
+		style="width:200px; margin-top: 50px; margin-left: 50px; margin-bottom: 5px;">
+			<span class="fa fa-facebook"></span>
+				Login with Facebook
+		</a>
+		<a href="{{url_for('auth.twitter_login')}}" class="btn btn-block btn-social btn-twitter"style="width:200px; margin-left: 50px;">
+			<span class="fa fa-twitter"></span>
+				Login with Twitter
+		</a>
+		<a href="{{ url_for('auth.login') }}"
+		style="width:200px; margin-left: 50px;">
+			Sign In
+		</a>
+		<a href="{{ url_for('auth.register') }}">
+			Sign Up
+		</a>
+	</div>
+{% endblock %}

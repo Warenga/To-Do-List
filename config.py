@@ -1,41 +1,36 @@
-import os 
+import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
 	DEBUG = True
 	WTF_CSRF_ENABLED = True
-	SECRET_KEY = os.environ.get('SECRET_KEY') or 'hard to guess string'
+	SECRET_KEY = os.environ.get('SECRET_KEY') or 'if cantie can tie a tie'
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
-	SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-		'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
-
 	SQLALCHEMY_TRACK_MODIFICATIONS = True
-	MAIL_SERVER = 'smtp.gmail.com'
-	MAIL_PORT = 465
-	MAIL_USE_SSL = True
-	MAIL_USERNAME = 'email'
-	MAIL_PASSWORD = 'password'
-
 
 	@staticmethod
 	def init_app(app):
 		pass
 
+class DevelopmentConfig(Config):
+	DEBUG = True
+	SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
+	'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+
 class TestingConfig(Config):
 	TESTING = True
 	SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URL') or \
-		'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
+	'sqlite:///' + os.path.join(basedir, 'data-test.sqlite')
 
 class ProductionConfig(Config):
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-		'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+	'sqlite:///' + os.path.join(basedir, 'data.sqlite')
 
 config = {
+	'development': DevelopmentConfig,
+	'testing': TestingConfig,
+	'production': ProductionConfig,
 
-	'default': Config
-	# 'TestingConfig': TestingConfig
-	# 'ProductionConfig': ProductionConfig
-	
-	}
- 
+	'default': DevelopmentConfig
+}

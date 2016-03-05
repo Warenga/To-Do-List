@@ -1,75 +1,57 @@
+<!-- main page -->
+
 {% extends "base.html" %}
 
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block styles %}
-{{ super () }}
-
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-	<script src="{{ url_for('static', filename='js/ajax.js') }}"></script> 
-	
-{% endblock %}
-
-
-{% block side_navbar %}
-<div class="sidebar-nav" id="sidebar">
-		<div class="sidbar-nav breadcrumb pull-left col-sm-3" style=" margin-top: 25px; margin-left: 60px; background-color: #fff; border-radius: 10px;">
-			<div class="nav-canvas">
-				<div class="nav-sm nav nav-stacked">
-
-				</div>
-				<ul  class="nav nav-pills nav-stacked main-menu">
-					<li class="nav-header">
-						<span>{% if current_user.is_authenticated %} 
-								{{ wtf.quick_form(lform, url_for('main.index'))}} 
-
-							{% endif %}</span>
-					</li>
-					<br>
-					{% for lis in lists %}
-					<div class="list-group" id="list">
-					  <button type="button" action="{{ url_for('main.lis', lis.id) }]"  id="{{lis.id}}" class="list-group-item">{{lis.title}}</button>
-					</div>
-					
-				</ul>
-			</div>
-		</div>
-</div>
-<script>
-
-		$(document).ready(function() {
-			$('#list button').on('click', function() {
-				var id = $('#list button').attr('id');
-				$.ajax({
-					url: "{{ url_for('main.show') }}",
-					type: 'GET',
-					success: function(res) {
-						console.log(res);
-					},
-					error: function(error) {
-						console.log(error);
-					}
-				});
-			});
-		});
-	</script>
-	{% endfor %}
-
+{% block nav %}
+<form class="navbar-form navbar-right" role="search">
+    <div class="form-group waves-effect waves-light">
+        {{ wtf.quick_form(form1, action=url_for('main.index')) }}
+    </div>
+</form>
 {% endblock %}
 
 {% block page_content %}
-	<div id="background">
-		<div id="result">
-			<h3>TO DO LIST APPLICATION</h3>
-		</div>
+<div class="form col-md-5">
+	
+</div>
+<div class="col-md-7">
+	<div class="container">
+		
 	</div>
-
-
+</div>
+		
+	<!-- Posts -->
+{% for card in cards %}
+	<!-- <div id="grid" class="container"> -->
+	<div class="wrapper">
+		<div id="main">
+			<div id="items" class="row-fluid">
+				<div class=" item masonry-brick">
+					<div class="picture">
+						<div class="item-content">
+							<div class="decription">
+								<p> {{ card.card }} </p>
+							</div>
+							<div class="meta">
+								<span>
+									<i class="icon-calendar"></i>
+									created {{ moment(card.created_time).fromNow() }}
+								</span>
+								<span>
+									<i class="icon-user"></i>
+									<a class="waves-effect waves-light" data-toggle="modal" href="#" data-target="#myModal">Add Task</a>
+								</span>
+								<span>
+									<i class="icon-heart-empty"></i>
+									<form action="{{ url_for('main.delete_task', id = card.id) }}" method="post">
+										<button class="close">Delete</button>
+									</form>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+	{% endfor %}
 {% endblock %}
-
-
-
-
-
-
-

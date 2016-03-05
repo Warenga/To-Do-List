@@ -1,74 +1,56 @@
-from flask import jsonify, render_template, session, redirect, request, url_for, flash
+from flask import render_template, session, redirect, request, url_for, flash
 from . import main
-from .forms import ListForm, TaskForm
-from .. import db
-from ..models import Lis, Tasks, User
+from .forms import TaskForm, CardForm
+from ..import db
+from ..models import User, Cards, Tasks
 from flask.ext.login import login_required, current_user
 import json
-from flask.ext.mail import Message, Mail
+from datetime import datetime
 
-@main.route('/')
-def firstpage():
-	return render_template('auth/firstpage.html')
-
-@main.route('/index', methods=['GET','POST'])
+@main.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-	list_form = ListForm()
-	if list_form.validate():
-		lis = Lis(title=list_form.title.data, author=current_user._get_current_object())
-		db.session.add(lis)
+	"""
+		Contains the url and form for adding a new card
+	"""
+	form1 = CardForm()
+	if form1.validate_on_submit():
+		card = Cards(card=form1.card.data, author=current_user._get_current_object())
+		db.session.add(card)
 		db.session.commit()
 		flash('You have made a new List')
 		return redirect(url_for('.index'))
 	user = current_user._get_current_object()
-	lists = user.lists.order_by(Lis.title).all()
-	return render_template('index.html', lform=list_form, tform=TaskForm(), user=user, lists=lists)
+	cards = user.cards.order_by(Cards.created_time.desc()).all()
+	return render_template('index.html', form1=form1, task_form=TaskForm(), user=user,
+	 cards=cards)
 
-@main.route('/task/<int:id>', methods=['GET','POST'])
-def lis(id):
-	lis = Lis.query.get_or_404(id)
+@main.route('/tasks/<int:id>/', methods=['GET', 'POST'])
+def task(id):
+	"""
+		Contains the url and form for adding a new task in a card
+	"""
+	card = Cards.query.get_or_404(id)
 	task_form = TaskForm()
-	if request.method == 'POST' and task_form.validate():
-		tas = Tasks(body=task_form.body.data, lis=lis)
-		db.session.add(tas)
+	if request.method == 'POST' and task_form.validate_on_submit():
+		task = Tasks(task=task_form.tasks.data, card=card)
+		db.session.add(task)
 		db.session.commit()
-		return redirect(url_for('.lis', id=lis.id))
-	task_form.body.data = ''
-	tasks = Tasks.query.order_by(Tasks.body).all()
-	return render_template('task.html', lists=[lis], lform=ListForm(), tform=task_form, tasks=tasks)
+		flash('You have made a new Task')
+		return redirect(url_for('.task', id=card.id))
+	task_form.tasks.data = ''
+	tasks = Tasks.query.order_by(Tasks.task).all()
+	return render_template('index.html', task_form=task_form, form1=CardForm(), tasks=[card])
 
-@main.route('/delete/<int:id>', methods=['GET','POST'])
+
+@main.route('/delete/<int:id>', methods=['GET', 'POST'])
 def delete_task(id):
-	lis = Lis.query.get_or_404(id)
+	"""
+		Contains the url and id for deleting a card in the database
+	"""
+	card = Cards.query.get_or_404(id)
 	if request.method == 'POST':
-		db.session.delete(lis)
+		db.session.delete(task)
 		db.session.commit()
-		flash('List was deleted')
-		return redirect(url_for('.index', lists=[lis]))
-
-@main.route('/<int:id>', methods=['GET','POST'])
-def send(id):
-	lis = Lis.query.get_or_404(id)
-	user = User.query.all()	
-
-	msg = Message(lis.title, lis.tasks, sender='warengam@gmail.com', recipients=['warengam@gmail.com'] )
-	msg.body = """From: %s &ls;%s&gt; %s""" % (user.username, user.email, msg)
-	mail.send(msg)
-	flash('Message Sent')
-	return render_template('task.html', success=True)
-
-
-
-
-@main.route('/task/', methods=['GET', 'POST'])
-def show():
-	# lis = Lis.query.get_or_404(id)
-	lists = user.lists.order_by(Lis.title).all()
-	return jsonify(lists=lists)
-
-
-
-
-
-	
+		flash('Card deleted')
+		return redirect(url_for('.index', cards=[task]))

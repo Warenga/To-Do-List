@@ -24,4 +24,5 @@ twitter = oauth.remote_app(
     access_token_url='https://api.twitter.com/oauth/access_token',
     authorize_url='https://api.twitter.com/oauth/authorize',
 )
+
 from . import views

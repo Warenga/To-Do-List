@@ -1,2 +1,4 @@
-todolist
+
 *.pyc
+
+# SQLite databases
