@@ -48,7 +48,9 @@ body {
 }
 
 #form1 {
-	margin-left:10px;
+	margin-bottom: 20px;
+	margin-right: 200px;
+	margin: 10px;
 	display: inline-block;
 }
 
