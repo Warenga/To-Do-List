@@ -15,7 +15,7 @@ def index():
 	"""
 	form1 = CardForm()
 	if form1.validate_on_submit():
-		cad = Cards(card=form1.card.data, author=current_user._get_current_object())
+		cad = Cards(card=form1.card.data)
 		db.session.add(cad)
 		db.session.commit()
 		flash('You have made a new List')
