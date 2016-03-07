@@ -4,26 +4,17 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block nav %}
-<form class="navbar-form navbar-right" role="search">
-    <div class="form-group waves-effect waves-light">
-        {{ wtf.quick_form(form1, action=url_for('main.index')) }}
-    </div>
-</form>
-{% endblock %}
 
 {% block page_content %}
-<div class="form col-md-5">
-	
-</div>
-<div class="col-md-7">
-	<div class="container">
-		
-	</div>
-</div>
-		
+<div class="form">
+	<form method=post>
+	{{ form1.hidden_tag() }}
+		{{ form1.card (class_="u-full-width", placeholder="New Card", maxlength=128) }}
+		{{ form1.submit }}
+	</form>
+</div>	
 	<!-- Posts -->
-{% for card in cards %}
+{% for cad in cards %}
 	<!-- <div id="grid" class="container"> -->
 	<div class="wrapper">
 		<div id="main">
@@ -32,20 +23,25 @@
 					<div class="picture">
 						<div class="item-content">
 							<div class="decription">
-								<p> {{ card.card }} </p>
+								<p> {{ cad.cad }} </p>
 							</div>
+							<form action="{{ url_for('main.task', id=cad.id) }}"method=post>
+								{{ wtf.quick_form(task_form)}}
+							</form>
+							{% for task in cad.tasks %}
+								<form action="{{ url_for('main.delete_task', id = task.id) }}" method="post">
+									<button class="close">x</button>
+								</form>
+								<p><input class="strikethrough"  type="checkbox" value="1">{{ cad.tasks }}</p>
+								
+							{% endfor %}
 							<div class="meta">
 								<span>
 									<i class="icon-calendar"></i>
-									created {{ moment(card.created_time).fromNow() }}
-								</span>
-								<span>
-									<i class="icon-user"></i>
-									<a class="waves-effect waves-light" data-toggle="modal" href="#" data-target="#myModal">Add Task</a>
 								</span>
 								<span>
 									<i class="icon-heart-empty"></i>
-									<form action="{{ url_for('main.delete_task', id = card.id) }}" method="post">
+									<form action="{{ url_for('main.delete_card', id = cad.id) }}" method="post">
 										<button class="close">Delete</button>
 									</form>
 								</span>
@@ -54,4 +50,8 @@
 					</div>
 				</div>
 	{% endfor %}
+	<script type="text/javascript">
+		$('#my_checkbox')[0].checked = true;
+		$('#my_checkbox')[0].checked = false;
+	</script>
 {% endblock %}

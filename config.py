@@ -3,7 +3,6 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config:
-	DEBUG = True
 	WTF_CSRF_ENABLED = True
 	SECRET_KEY = os.environ.get('SECRET_KEY') or 'if cantie can tie a tie'
 	SQLALCHEMY_COMMIT_ON_TEARDOWN = True
