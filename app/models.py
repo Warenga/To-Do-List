@@ -23,12 +23,14 @@ class User(UserMixin, db.Model):
 	def verify_password(self, password):
 		return check_password_hash(self.password_hash, password)
 
-	def __repr__(self):
-		return '<User %r>' % self.user
+	def __str__(self):
+		return str(self.username)
 
 	@login_manager.user_loader
 	def load_user(user_id):
 		return User.query.get(int(user_id))
+
+	__repr__ = __str__
 
 
 
@@ -38,15 +40,14 @@ class Cards(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	card = db.Column(db.String(64), unique=True)
 	author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-	tasks = db.relationship('Tasks', backref='cad', lazy='dynamic')
+	tasks = db.relationship('Tasks', backref='card', lazy='immediate')
 
-	def __init__(self, name):
-		self.card = card
+	def __str__(self):
+		return str(self.tasks)
 
-	def __repr__(self):
-		return str(self.card)
+	__repr__ = __str__
 
-	
+
 
 class Tasks(db.Model):
 	__tablename__ = 'tasks'
@@ -55,11 +56,7 @@ class Tasks(db.Model):
 	done = db.Column(db.Boolean, default=False)
 	card_id = db.Column(db.Integer, db.ForeignKey('cards.id'))
 
-	def __init__(self, name):
-		self.task = task
+	def __str__(self):
+		return str(self.task)
 
-	def __repr__(self):
-		return  str(self.task)
-
-
-
+	__repr__ = __str__

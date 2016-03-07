@@ -47,7 +47,10 @@ body {
 	word-wrap: break-word;
 }
 
-
+#form1 {
+	margin-left:10px;
+	display: inline-block;
+}
 
 
 

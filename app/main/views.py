@@ -15,8 +15,8 @@ def index():
 	"""
 	form1 = CardForm()
 	if form1.validate_on_submit():
-		cad = Cards(card=form1.card.data)
-		db.session.add(cad)
+		card = Cards(card=form1.card.data, author=current_user._get_current_object())
+		db.session.add(card)
 		db.session.commit()
 		flash('You have made a new List')
 		return redirect(url_for('.index'))
@@ -30,16 +30,16 @@ def task(id):
 	"""
 		Contains the url and form for adding a new task in a card
 	"""
-	cad = Cards.query.get_or_404(id)
+	card = Cards.query.get_or_404(id)
 	task_form = TaskForm()
 	if request.method == 'POST' and task_form.validate_on_submit():
-		task = Tasks(task=task_form.tas.data, cad=cad)
+		task = Tasks(task=task_form.task.data, card=card)
 		db.session.add(task)
 		db.session.commit()
 		flash('You have made a new Task')
 		return redirect(url_for('.index'))
-	tasks = str(Tasks.query.order_by(Tasks.task).all())
-	return render_template('index.html', task_form=task_form, form1=CardForm(), cards=[cad], tasks=str(tasks))
+	tasks = Tasks.query.order_by(Tasks.task).all()
+	return render_template('index.html', task_form=task_form, form1=CardForm(), cards=[card], tasks=tasks)
 
 
 @main.route('/delete/<int:id>', methods=['GET', 'POST'])
@@ -47,12 +47,12 @@ def delete_card(id):
 	"""
 		Contains the url and id for deleting a card in the database
 	"""
-	cad = Cards.query.get_or_404(id)
+	card = Cards.query.get_or_404(id)
 	if request.method == 'POST':
-		db.session.delete(cad)
+		db.session.delete(card)
 		db.session.commit()
 		flash('Card deleted')
-		return redirect(url_for('.index', cards=[cad]))
+		return redirect(url_for('.index', cards=[card]))
 
 
 @main.route('/delete/task/<int:id>', methods=['GET', 'POST'])
@@ -67,7 +67,7 @@ def delete_task(id):
 		flash('Task deleted')
 		return redirect(url_for('.index', tasks=[task]))
 
-@main.route('/settings')
+@main.route('/settings', methods=['GET','POST'])
 @login_required
 def settings():
 	form = UserForm()
@@ -75,7 +75,10 @@ def settings():
 		current_user.username = form.username.data
 		current_user.email = form.email.data
 		current_user.password = form.password.data
+		user = current_user
+		db.session.delete(user)
 		db.session.add(user)
+		db.session.commit()
 		flash('Your settings have been changed')
 		return redirect('/index')
 	form.username.data = current_user.username
